@@ -1,0 +1,174 @@
+Parsing XML to JSON:
+
+a. Initially converting XML file to Python script.
+Python script to convert the given XML into a Python dictionary and then print it out:
+
+import xml.etree.ElementTree as ET
+
+# XML data
+xml_data = """
+<Order>
+    <OrderID>1002</OrderID>
+    <Customer>
+        <CustomerID>2</CustomerID>
+        <Name>Jane Doe</Name>
+    </Customer>
+    <OrderDate>2024-10-15T11:00:00</OrderDate>
+    <Products>
+        <Product>
+            <ProductID>102</ProductID>
+            <Name>Keyboard</Name>
+            <Quantity>1</Quantity>
+            <Price>49.99</Price>
+        </Product>
+    </Products>
+    <TotalAmount>49.99</TotalAmount>
+</Order>
+"""
+
+# Function to convert XML to dictionary
+def xml_to_dict(element):
+    if len(element) == 0:
+        return element.text
+    return {child.tag: xml_to_dict(child) for child in element}
+
+# Parse XML data
+root = ET.fromstring(xml_data)
+order_dict = xml_to_dict(root)
+
+# Print the result
+print(order_dict)
+
+This script parses the XML, converts it into a dictionary, and then prints the dictionary. The dictionary will look like this:
+
+{
+    'Order': {
+        'OrderID': '1002',
+        'Customer': {
+            'CustomerID': '2',
+            'Name': 'Jane Doe'
+        },
+        'OrderDate': '2024-10-15T11:00:00',
+        'Products': {
+            'Product': {
+                'ProductID': '102',
+                'Name': 'Keyboard',
+                'Quantity': '1',
+                'Price': '49.99'
+            }
+        },
+        'TotalAmount': '49.99'
+    }
+}
+
+The dictionary we created from the XML and convert it to JSON.
+
+import xml.etree.ElementTree as ET
+import json
+
+# XML data
+xml_data = """
+<Order>
+    <OrderID>1002</OrderID>
+    <Customer>
+        <CustomerID>2</CustomerID>
+        <Name>Jane Doe</Name>
+    </Customer>
+    <OrderDate>2024-10-15T11:00:00</OrderDate>
+    <Products>
+        <Product>
+            <ProductID>102</ProductID>
+            <Name>Keyboard</Name>
+            <Quantity>1</Quantity>
+            <Price>49.99</Price>
+        </Product>
+    </Products>
+    <TotalAmount>49.99</TotalAmount>
+</Order>
+"""
+
+# Function to convert XML to dictionary
+def xml_to_dict(element):
+    if len(element) == 0:
+        return element.text
+    return {child.tag: xml_to_dict(child) for child in element}
+
+# Parse XML data
+root = ET.fromstring(xml_data)
+order_dict = xml_to_dict(root)
+
+# Convert dictionary to JSON
+order_json = json.dumps(order_dict, indent=4)
+
+# Print JSON
+print(order_json)
+
+You
+how to convert the extracted data to JSON format
+Copilot
+Sure thing! Let's take the dictionary we created from the XML and convert it to JSON. Here’s the script to do that:
+
+python
+
+Copy
+import xml.etree.ElementTree as ET
+import json
+
+# XML data
+xml_data = """
+<Order>
+    <OrderID>1002</OrderID>
+    <Customer>
+        <CustomerID>2</CustomerID>
+        <Name>Jane Doe</Name>
+    </Customer>
+    <OrderDate>2024-10-15T11:00:00</OrderDate>
+    <Products>
+        <Product>
+            <ProductID>102</ProductID>
+            <Name>Keyboard</Name>
+            <Quantity>1</Quantity>
+            <Price>49.99</Price>
+        </Product>
+    </Products>
+    <TotalAmount>49.99</TotalAmount>
+</Order>
+"""
+
+# Function to convert XML to dictionary
+def xml_to_dict(element):
+    if len(element) == 0:
+        return element.text
+    return {child.tag: xml_to_dict(child) for child in element}
+
+# Parse XML data
+root = ET.fromstring(xml_data)
+order_dict = xml_to_dict(root)
+
+# Convert dictionary to JSON
+order_json = json.dumps(order_dict, indent=4)
+
+# Print JSON
+print(order_json)
+
+When we run this script, it will output the JSON format of your XML data. The JSON result will look like this:
+
+{
+    "Order": {
+        "OrderID": "1002",
+        "Customer": {
+            "CustomerID": "2",
+            "Name": "Jane Doe"
+        },
+        "OrderDate": "2024-10-15T11:00:00",
+        "Products": {
+            "Product": {
+                "ProductID": "102",
+                "Name": "Keyboard",
+                "Quantity": "1",
+                "Price": "49.99"
+            }
+        },
+        "TotalAmount": "49.99"
+    }
+}
