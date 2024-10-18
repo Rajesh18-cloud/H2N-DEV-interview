@@ -1,0 +1,206 @@
+Python script to convert the XML data you provided into a JSON format. This script will parse the XML, convert it into a dictionary, and then convert that dictionary to JSON:
+
+import xml.etree.ElementTree as ET
+import json
+
+# XML data
+xml_data = """
+<Orders>
+    <Order>
+        <OrderID>1</OrderID>
+        <Customer>
+            <CustomerID>1</CustomerID>
+            <Name>Customer 1</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:01:00</OrderDate>
+        <Products>
+            <Product>
+                <ProductID>101</ProductID>
+                <Name>Product 1</Name>
+                <Quantity>3</Quantity>
+                <Price>49.63</Price>
+            </Product>
+        </Products>
+        <TotalAmount>77.53</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>2</OrderID>
+        <Customer>
+            <CustomerID>2</CustomerID>
+            <Name>Customer 2</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:02:00</OrderDate>
+        <Products>
+            <Product>
+                <ProductID>102</ProductID>
+                <Name>Product 2</Name>
+                <Quantity>2</Quantity>
+                <Price>76.79</Price>
+            </Product>
+        </Products>
+        <TotalAmount>259.80</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>3</OrderID>
+        <Customer>
+            <CustomerID>3</CustomerID>
+            <Name>Customer 3</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:03:00</OrderDate>
+        <Products>
+            <Product>
+                <ProductID>103</ProductID>
+                <Name>Product 3</Name>
+                <Quantity>5</Quantity>
+                <Price>64.95</Price>
+            </Product>
+        </Products>
+        <TotalAmount>296.99</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>4</OrderID>
+        <Customer>
+            <CustomerID>4</CustomerID>
+            <Name>Customer 4</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:04:00</OrderDate>
+        <Products>
+            <Product>
+                <ProductID>104</ProductID>
+                <Name>Product 4</Name>
+                <Quantity>3</Quantity>
+                <Price>87.59</Price>
+            </Product>
+        </Products>
+        <TotalAmount>112.12</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>5</OrderID>
+        <Customer>
+            <CustomerID>5</CustomerID>
+            <Name>Customer 5</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:05:00</OrderDate>
+        <Products>
+            <Product>
+                <ProductID>105</ProductID>
+                <Name>Product 5</Name>
+                <Quantity>1</Quantity>
+                <Price>18.15</Price>
+            </Product>
+        </Products>
+        <TotalAmount>314.62</TotalAmount>
+    </Order>
+</Orders>
+"""
+
+# Function to convert XML to dictionary
+def xml_to_dict(element):
+    if len(element) == 0:
+        return element.text
+    return {child.tag: xml_to_dict(child) for child in element}
+
+# Parse XML data
+root = ET.fromstring(xml_data)
+orders_dict = xml_to_dict(root)
+
+# Convert dictionary to JSON
+orders_json = json.dumps(orders_dict, indent=4)
+
+# Print JSON
+print(orders_json)
+
+
+Running this script will parse the XML, convert it into a dictionary, and then convert that dictionary to JSON format. The JSON output will look like this:
+
+{
+    "Orders": {
+        "Order": [
+            {
+                "OrderID": "1",
+                "Customer": {
+                    "CustomerID": "1",
+                    "Name": "Customer 1"
+                },
+                "OrderDate": "2024-10-15T10:01:00",
+                "Products": {
+                    "Product": {
+                        "ProductID": "101",
+                        "Name": "Product 1",
+                        "Quantity": "3",
+                        "Price": "49.63"
+                    }
+                },
+                "TotalAmount": "77.53"
+            },
+            {
+                "OrderID": "2",
+                "Customer": {
+                    "CustomerID": "2",
+                    "Name": "Customer 2"
+                },
+                "OrderDate": "2024-10-15T10:02:00",
+                "Products": {
+                    "Product": {
+                        "ProductID": "102",
+                        "Name": "Product 2",
+                        "Quantity": "2",
+                        "Price": "76.79"
+                    }
+                },
+                "TotalAmount": "259.80"
+            },
+            {
+                "OrderID": "3",
+                "Customer": {
+                    "CustomerID": "3",
+                    "Name": "Customer 3"
+                },
+                "OrderDate": "2024-10-15T10:03:00",
+                "Products": {
+                    "Product": {
+                        "ProductID": "103",
+                        "Name": "Product 3",
+                        "Quantity": "5",
+                        "Price": "64.95"
+                    }
+                },
+                "TotalAmount": "296.99"
+            },
+            {
+                "OrderID": "4",
+                "Customer": {
+                    "CustomerID": "4",
+                    "Name": "Customer 4"
+                },
+                "OrderDate": "2024-10-15T10:04:00",
+                "Products": {
+                    "Product": {
+                        "ProductID": "104",
+                        "Name": "Product 4",
+                        "Quantity": "3",
+                        "Price": "87.59"
+                    }
+                },
+                "TotalAmount": "112.12"
+            },
+            {
+                "OrderID": "5",
+                "Customer": {
+                    "CustomerID": "5",
+                    "Name": "Customer 5"
+                },
+                "OrderDate": "2024-10-15T10:05:00",
+                "Products": {
+                    "Product": {
+                        "ProductID": "105",
+                        "Name": "Product 5",
+                        "Quantity": "1",
+                        "Price": "18.15"
+                    }
+                },
+                "TotalAmount": "314.62"
+            }
+        ]
+    }
+}

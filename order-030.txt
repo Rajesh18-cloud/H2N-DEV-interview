@@ -1,0 +1,23 @@
+Python script that converts this XML data into a dictionary:
+import xml.etree.ElementTree as ET
+
+xml_data = '''<Orders><Order><OrderID>291</OrderID><Customer><CustomerID>291</CustomerID><Name>Customer 291</Name></Customer><OrderDate>2024-10-15T10:51:00</OrderDate><TotalAmount>179.46</TotalAmount></Order></Orders>'''
+
+def xml_to_dict(xml_str):
+    root = ET.fromstring(xml_str)
+    order_dict = {}
+    
+    order = root.find('Order')
+    order_dict['OrderID'] = order.find('OrderID').text
+    
+    customer = order.find('Customer')
+    order_dict['CustomerID'] = customer.find('CustomerID').text
+    order_dict['CustomerName'] = customer.find('Name').text
+    
+    order_dict['OrderDate'] = order.find('OrderDate').text
+    order_dict['TotalAmount'] = order.find('TotalAmount').text
+    
+    return order_dict
+
+order_dict = xml_to_dict(xml_data)
+print(order_dict)

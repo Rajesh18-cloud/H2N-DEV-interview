@@ -1,0 +1,101 @@
+Python script to convert your provided XML data into a Python dictionary and then print it as JSON:
+import xml.etree.ElementTree as ET
+import json
+
+# XML data
+xml_data = """
+<Orders>
+    <Order>
+        <OrderID>241</OrderID>
+        <Customer>
+            <CustomerID>241</CustomerID>
+            <Name>Customer 241</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:01:00</OrderDate>
+        <Products>
+            <Product>
+                <ProductID>341</ProductID>
+                <Name>Product 241</Name>
+                <Quantity>1</Quantity>
+                <Price>45.43</Price>
+            </Product>
+        </Products>
+        <TotalAmount>468.17</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>242</OrderID>
+        <Customer>
+            <CustomerID>242</CustomerID>
+            <Name>Customer 242</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:02:00</OrderDate>
+        <Products>
+            <Product>
+                <ProductID>342</ProductID>
+                <Name>Product 242</Name>
+                <Quantity>3</Quantity>
+                <Price>46.83</Price>
+            </Product>
+        </Products>
+        <TotalAmount>98.87</TotalAmount>
+    </Order>
+</Orders>
+"""
+
+# Function to convert XML to dictionary
+def xml_to_dict(element):
+    if len(element) == 0:
+        return element.text
+    return {child.tag: xml_to_dict(child) for child in element}
+
+# Parse XML data
+root = ET.fromstring(xml_data)
+orders_dict = xml_to_dict(root)
+
+# Convert dictionary to JSON
+orders_json = json.dumps(orders_dict, indent=4)
+
+# Print JSON
+print(orders_json)
+Running this script will parse the XML, convert it into a dictionary, and then transform that dictionary into JSON format. Here’s the JSON output:
+
+json
+
+{
+    "Orders": {
+        "Order": [
+            {
+                "OrderID": "241",
+                "Customer": {
+                    "CustomerID": "241",
+                    "Name": "Customer 241"
+                },
+                "OrderDate": "2024-10-15T10:01:00",
+                "Products": {
+                    "Product": {
+                        "ProductID": "341",
+                        "Name": "Product 241",
+                        "Quantity": "1",
+                        "Price": "45.43"
+                    }
+                },
+                "TotalAmount": "468.17"
+            },
+            {
+                "OrderID": "242",
+                "Customer": {
+                    "CustomerID": "242",
+                    "Name": "Customer 242"
+                },
+                "OrderDate": "2024-10-15T10:02:00",
+                "Products": {
+                    "ProductID": "342",
+                    "Name": "Product 242",
+                    "Quantity": "3",
+                    "Price": "46.83"
+                },
+                "TotalAmount": "98.87"
+            }
+        ]
+    }
+}

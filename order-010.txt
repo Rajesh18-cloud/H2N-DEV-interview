@@ -1,0 +1,68 @@
+Python script to parse your provided XML data into a Python dictionary and then convert it to JSON format:
+import xml.etree.ElementTree as ET
+import json
+
+# XML data
+xml_data = """
+<Orders>
+    <Order>
+        <OrderID>91</OrderID>
+        <Customer>
+            <CustomerID>91</CustomerID>
+            <Name>Customer 91</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:31:00</OrderDate>
+        <TotalAmount>313.82</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>92</OrderID>
+        <Customer>
+            <CustomerID>92</CustomerID>
+            <Name>Customer 92</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:32:00</OrderDate>
+        <TotalAmount>235.30</TotalAmount>
+    </Order>
+</Orders>
+"""
+
+# Function to convert XML to dictionary
+def xml_to_dict(element):
+    if len(element) == 0:
+        return element.text
+    return {child.tag: xml_to_dict(child) for child in element}
+
+# Parse XML data
+root = ET.fromstring(xml_data)
+orders_dict = xml_to_dict(root)
+
+# Convert dictionary to JSON
+orders_json = json.dumps(orders_dict, indent=4)
+
+# Print JSON
+print(orders_json)
+Running this script will parse the XML, convert it into a dictionary, and then transform that dictionary into JSON format. The JSON output will look like this:
+{
+    "Orders": {
+        "Order": [
+            {
+                "OrderID": "91",
+                "Customer": {
+                    "CustomerID": "91",
+                    "Name": "Customer 91"
+                },
+                "OrderDate": "2024-10-15T10:31:00",
+                "TotalAmount": "313.82"
+            },
+            {
+                "OrderID": "92",
+                "Customer": {
+                    "CustomerID": "92",
+                    "Name": "Customer 92"
+                },
+                "OrderDate": "2024-10-15T10:32:00",
+                "TotalAmount": "235.30"
+            }
+        ]
+    }
+}

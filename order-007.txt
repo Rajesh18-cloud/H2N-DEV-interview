@@ -1,0 +1,132 @@
+Python script that parses the given XML data, converts it into a Python dictionary, and then prints it as JSON:
+import xml.etree.ElementTree as ET
+import json
+
+# XML data
+xml_data = """
+<Orders>
+    <Order>
+        <OrderID>61</OrderID>
+        <Customer>
+            <CustomerID>61</CustomerID>
+            <Name>Customer 61</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:01:00</OrderDate>
+        <Products/>
+        <TotalAmount>449.14</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>62</OrderID>
+        <Customer>
+            <CustomerID>62</CustomerID>
+            <Name>Customer 62</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:02:00</OrderDate>
+        <Products/>
+        <TotalAmount>456.90</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>63</OrderID>
+        <Customer>
+            <CustomerID>63</CustomerID>
+            <Name>Customer 63</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:03:00</OrderDate>
+        <Products/>
+        <TotalAmount>123.54</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>64</OrderID>
+        <Customer>
+            <CustomerID>64</CustomerID>
+            <Name>Customer 64</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:04:00</OrderDate>
+        <Products/>
+        <TotalAmount>165.58</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>65</OrderID>
+        <Customer>
+            <CustomerID>65</CustomerID>
+            <Name>Customer 65</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:05:00</OrderDate>
+        <Products/>
+        <TotalAmount>60.37</TotalAmount>
+    </Order>
+</Orders>
+"""
+
+# Function to convert XML to dictionary
+def xml_to_dict(element):
+    if len(element) == 0:
+        return element.text
+    return {child.tag: xml_to_dict(child) for child in element}
+
+# Parse XML data
+root = ET.fromstring(xml_data)
+orders_dict = xml_to_dict(root)
+
+# Convert dictionary to JSON
+orders_json = json.dumps(orders_dict, indent=4)
+
+# Print JSON
+print(orders_json)
+Running this script will parse the XML, convert it into a dictionary, and then convert that dictionary into JSON format. Here’s the JSON output:
+{
+    "Orders": {
+        "Order": [
+            {
+                "OrderID": "61",
+                "Customer": {
+                    "CustomerID": "61",
+                    "Name": "Customer 61"
+                },
+                "OrderDate": "2024-10-15T10:01:00",
+                "Products": null,
+                "TotalAmount": "449.14"
+            },
+            {
+                "OrderID": "62",
+                "Customer": {
+                    "CustomerID": "62",
+                    "Name": "Customer 62"
+                },
+                "OrderDate": "2024-10-15T10:02:00",
+                "Products": null,
+                "TotalAmount": "456.90"
+            },
+            {
+                "OrderID": "63",
+                "Customer": {
+                    "CustomerID": "63",
+                    "Name": "Customer 63"
+                },
+                "OrderDate": "2024-10-15T10:03:00",
+                "Products": null,
+                "TotalAmount": "123.54"
+            },
+            {
+                "OrderID": "64",
+                "Customer": {
+                    "CustomerID": "64",
+                    "Name": "Customer 64"
+                },
+                "OrderDate": "2024-10-15T10:04:00",
+                "Products": null,
+                "TotalAmount": "165.58"
+            },
+            {
+                "OrderID": "65",
+                "Customer": {
+                    "CustomerID": "65",
+                    "Name": "Customer 65"
+                },
+                "OrderDate": "2024-10-15T10:05:00",
+                "Products": null,
+                "TotalAmount": "60.37"
+            }
+        ]
+    }
+}

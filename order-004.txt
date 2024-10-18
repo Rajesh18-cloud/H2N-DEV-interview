@@ -1,0 +1,131 @@
+Python script that converts your given XML data into a Python dictionary and then prints it as JSON:
+import xml.etree.ElementTree as ET
+import json
+
+# XML data
+xml_data = """
+<Orders>
+    <Order>
+        <OrderID>31</OrderID>
+        <Customer>
+            <CustomerID>31</CustomerID>
+            <Name>Customer 31</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:31:00</OrderDate>
+        <Products>
+            <Product>
+                <ProductID>131</ProductID>
+                <Name>Product 31</Name>
+                <Quantity>4</Quantity>
+                <Price>47.06</Price>
+            </Product>
+        </Products>
+        <TotalAmount>142.78</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>32</OrderID>
+        <Customer>
+            <CustomerID>32</CustomerID>
+            <Name>Customer 32</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:32:00</OrderDate>
+        <Products>
+            <Product>
+                <ProductID>132</ProductID>
+                <Name>Product 32</Name>
+                <Quantity>1</Quantity>
+                <Price>54.21</Price>
+            </Product>
+        </Products>
+        <TotalAmount>320.97</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>33</OrderID>
+        <Customer>
+            <CustomerID>33</CustomerID>
+            <Name>Customer 33</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:33:00</OrderDate>
+        <Products>
+            <Product>
+                <ProductID>133</ProductID>
+                <Name>Product 33</Name>
+                <Quantity>1</Quantity>
+                <Price>12.65</Price>
+            </Product>
+        </Products>
+Running this script will parse the XML, convert it into a dictionary, and then convert that dictionary into JSON format. The JSON output will look like this:
+{
+    "Orders": {
+        "Order": [
+            {
+                "OrderID": "31",
+                "Customer": {
+                    "CustomerID": "31",
+                    "Name": "Customer 31"
+                },
+                "OrderDate": "2024-10-15T10:31:00",
+                "Products": {
+                    "Product": {
+                        "ProductID": "131",
+                        "Name": "Product 31",
+                        "Quantity": "4",
+                        "Price": "47.06"
+                    }
+                },
+                "TotalAmount": "142.78"
+            },
+            {
+                "OrderID": "32",
+                "Customer": {
+                    "CustomerID": "32",
+                    "Name": "Customer 32"
+                },
+                "OrderDate": "2024-10-15T10:32:00",
+                "Products": {
+                    "Product": {
+                        "ProductID": "132",
+                        "Name": "Product 32",
+                        "Quantity": "1",
+                        "Price": "54.21"
+                    }
+                },
+                "TotalAmount": "320.97"
+            },
+            {
+                "OrderID": "33",
+                "Customer": {
+                    "CustomerID": "33",
+                    "Name": "Customer 33"
+                },
+                "OrderDate": "2024-10-15T10:33:00",
+                "Products": {
+                    "Product": {
+                        "ProductID": "133",
+                        "Name": "Product 33",
+                        "Quantity": "1",
+                        "Price": "12.65"
+                    }
+                },
+                "TotalAmount": "403.95"
+            },
+            {
+                "OrderID": "34",
+                "Customer": {
+                    "CustomerID": "34",
+                    "Name": "Customer 34"
+                },
+                "OrderDate": "2024-10-15T10:34:00",
+                "Products": {
+                    "Product": {
+                        "ProductID": "134",
+                        "Name": "Product 34",
+                        "Quantity": "5",
+                        "Price": "17.90"
+                    }
+                },
+                "TotalAmount": "479.91"
+            }
+        ]
+    }
+}

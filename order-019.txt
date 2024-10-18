@@ -1,0 +1,115 @@
+Python script to convert your given XML data into a Python dictionary and then print it as JSON:
+import xml.etree.ElementTree as ET
+import json
+
+# XML data
+xml_data = """
+<Orders>
+    <Order>
+        <OrderID>181</OrderID>
+        <Customer>
+            <CustomerID>181</CustomerID>
+            <Name>Customer 181</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:01:00</OrderDate>
+        <Products/>
+        <TotalAmount>82.23</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>182</OrderID>
+        <Customer>
+            <CustomerID>182</CustomerID>
+            <Name>Customer 182</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:02:00</OrderDate>
+        <Products/>
+        <TotalAmount>498.99</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>183</OrderID>
+        <Customer>
+            <CustomerID>183</CustomerID>
+            <Name>Customer 183</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:03:00</OrderDate>
+        <Products/>
+        <TotalAmount>237.63</TotalAmount>
+    </Order>
+    <Order>
+        <OrderID>184</OrderID>
+        <Customer>
+            <CustomerID>184</CustomerID>
+            <Name>Customer 184</Name>
+        </Customer>
+        <OrderDate>2024-10-15T10:04:00</OrderDate>
+        <Products/>
+        <TotalAmount>445.81</TotalAmount>
+    </Order>
+</Orders>
+"""
+
+# Function to convert XML to dictionary
+def xml_to_dict(element):
+    if len(element) == 0:
+        return element.text
+    return {child.tag: xml_to_dict(child) for child in element}
+
+# Parse XML data
+root = ET.fromstring(xml_data)
+orders_dict = xml_to_dict(root)
+
+# Convert dictionary to JSON
+orders_json = json.dumps(orders_dict, indent=4)
+
+# Print JSON
+print(orders_json)
+Running this script will parse the XML, convert it into a dictionary, and then transform that dictionary into JSON format. Here’s the JSON output:
+
+json
+
+{
+    "Orders": {
+        "Order": [
+            {
+                "OrderID": "181",
+                "Customer": {
+                    "CustomerID": "181",
+                    "Name": "Customer 181"
+                },
+                "OrderDate": "2024-10-15T10:01:00",
+                "Products": null,
+                "TotalAmount": "82.23"
+            },
+            {
+                "OrderID": "182",
+                "Customer": {
+                    "CustomerID": "182",
+                    "Name": "Customer 182"
+                },
+                "OrderDate": "2024-10-15T10:02:00",
+                "Products": null,
+                "TotalAmount": "498.99"
+            },
+            {
+                "OrderID": "183",
+                "Customer": {
+                    "CustomerID": "183",
+                    "Name": "Customer 183"
+                },
+                "OrderDate": "2024-10-15T10:03:00",
+                "Products": null,
+                "TotalAmount": "237.63"
+            },
+            {
+                "OrderID": "184",
+                "Customer": {
+                    "CustomerID": "184",
+                    "Name": "Customer 184"
+                },
+                "OrderDate": "2024-10-15T10:04:00",
+                "Products": null,
+                "TotalAmount": "445.81"
+            }
+        ]
+    }
+}

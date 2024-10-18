@@ -1,0 +1,39 @@
+ Python script that converts the provided XML data into a dictionary:
+
+python
+
+import xml.etree.ElementTree as ET
+
+xml_data = '''<Orders><Order><OrderID>281</OrderID><Customer><CustomerID>281</CustomerID><Name>Customer 281</Name></Customer><OrderDate>2024-10-15T10:41:00</OrderDate><Products><Product><ProductID>381</ProductID><Name>Product 281</Name><Quantity>1</Quantity><Price>80.22</Price></Product></Products><TotalAmount>347.42</TotalAmount></Order></Orders>'''
+
+def xml_to_dict(xml_str):
+    root = ET.fromstring(xml_str)
+    order_dict = {}
+    
+    order = root.find('Order')
+    order_dict['OrderID'] = order.find('OrderID').text
+    
+    customer = order.find('Customer')
+    order_dict['CustomerID'] = customer.find('CustomerID').text
+    order_dict['CustomerName'] = customer.find('Name').text
+    
+    order_dict['OrderDate'] = order.find('OrderDate').text
+    
+    products = order.find('Products')
+    product_list = []
+    for product in products.findall('Product'):
+        product_info = {
+            'ProductID': product.find('ProductID').text,
+            'ProductName': product.find('Name').text,
+            'Quantity': product.find('Quantity').text,
+            'Price': product.find('Price').text
+        }
+        product_list.append(product_info)
+        
+    order_dict['Products'] = product_list
+    order_dict['TotalAmount'] = order.find('TotalAmount').text
+    
+    return order_dict
+
+order_dict = xml_to_dict(xml_data)
+print(order_dict)
