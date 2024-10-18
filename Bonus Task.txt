@@ -1,0 +1,116 @@
+1. Storing Data in SQLite
+Create the SQLite database and two tables, then insert the XML and JSON data:
+
+python
+
+import sqlite3
+import xml.etree.ElementTree as ET
+import json
+
+# XML data (example)
+xml_data = """
+<Order>
+    <OrderID>1009</OrderID>
+    <Customer>
+        <CustomerID>9</CustomerID>
+        <Name>Sarah White</Name>
+    </Customer>
+    <OrderDate>2024-10-15T18:00:00</OrderDate>
+    <Products>
+        <Product>
+            <ProductID>109</ProductID>
+            <Name>Tablet</Name>
+            <Quantity>1</Quantity>
+            <Price>199.99</Price>
+        </Product>
+    </Products>
+    <TotalAmount>199.99</TotalAmount>
+</Order>
+"""
+
+# Connect to SQLite database
+conn = sqlite3.connect('data_storage.db')
+cursor = conn.cursor()
+
+# Create tables
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS raw_data (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    xml_content TEXT NOT NULL
+)
+''')
+
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS processed_data (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    json_content TEXT NOT NULL
+)
+''')
+
+# Function to convert XML to dictionary
+def xml_to_dict(element):
+    if len(element) == 0:
+        return element.text
+    return {child.tag: xml_to_dict(child) for child in element}
+
+# Function to insert raw XML data
+def insert_raw_data(xml_content):
+    cursor.execute('INSERT INTO raw_data (xml_content) VALUES (?)', (xml_content,))
+    conn.commit()
+
+# Function to insert processed JSON data
+def insert_processed_data(json_content):
+    cursor.execute('INSERT INTO processed_data (json_content) VALUES (?)', (json_content,))
+    conn.commit()
+
+# Insert XML data
+insert_raw_data(xml_data)
+
+# Parse XML data
+root = ET.fromstring(xml_data)
+order_dict = xml_to_dict(root)
+
+# Convert dictionary to JSON
+order_json = json.dumps(order_dict, indent=4)
+
+# Insert JSON data
+insert_processed_data(order_json)
+
+conn.close()
+
+2. Retry Mechanism for Errors
+Implementing a retry mechanism:
+
+import time
+
+def parse_with_retries(xml_content, max_retries=3):
+    for attempt in range(max_retries):
+        try:
+            # Simulate parsing logic
+            root = ET.fromstring(xml_content)
+            return xml_to_dict(root)
+        except Exception as e:
+            print(f'Attempt {attempt + 1} failed: {e}')
+            time.sleep(1)
+    raise Exception('Max retries exceeded')
+
+3. Write Unit Tests
+Using pytest for unit tests:
+
+import pytest
+
+# Unit test for XML parsing logic
+def test_parse_with_retries_success():
+    xml_data = "<Order><OrderID>1009</OrderID></Order>"
+    result = parse_with_retries(xml_data)
+    assert result == {'Order': {'OrderID': '1009'}}
+
+def test_parse_with_retries_failure():
+    with pytest.raises(Exception):
+        parse_with_retries("<invalid>XML</invalid>", max_retries=2)
+
+# Unit test for logging functionality (if you have logging)
+def test_logging(caplog):
+    xml_data = "<Order><OrderID>1009</OrderID></Order>"
+    parse_with_retries(xml_data)
+    assert "Attempt 1 failed" not in caplog.text
